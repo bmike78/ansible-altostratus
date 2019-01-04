@@ -5,7 +5,9 @@ Installing Altostratus
 
 Installing Altostratus is easy.
 
-If you have git cloned this repo and folled the advice to create a python virtual environment, then it is mostly installed.
+If you have git cloned this repo and followed the advice to create a python virtual environment, then it is mostly installed.
+::
+  # git clone https://github.com/bmike78/ansible-altostratus.git
 
 Galaxy Roles
 ~~~~~~~~~~~~
