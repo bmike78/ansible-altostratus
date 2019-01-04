@@ -1,6 +1,6 @@
 Welcome to the Altostratus documentation!
 =================================
-.. image:: _static/cloud-outline-filled.png
+.. image:: ../_static/cloud-outline-filled.png
 
 Table of Contents
 =================

@@ -1,7 +1,7 @@
 .. _design:
 
 Design
-===
+======
 
 Why Was Altostratus Designed?
 ---------------------
@@ -22,7 +22,7 @@ Why Was Altostratus Designed?
 
 How is Altostratus Designed?
 ---------------------
-- `Altostratus`_ uses Ansible at its core to create Openstack instance or instances.  The Ansible os_ modules work very well to orchestrate most things in an Openstack cloud, so all of these operations can be automated as part of a playbook instead of coding a bunch of custom code against the Openstack APIs.
+- `Altostratus`_ uses Ansible at its core to create Openstack instance or instances.  The Ansible cloud modules for Openstack work very well to orchestrate most things in an Openstack cloud, so all of these operations can be automated as part of a playbook instead of coding a bunch of custom code against the Openstack APIs.
 - Once Openstack resources are created and idempotent, then the playbook will move on to application install based on roles that are added to the instance's yml file.
 - A declaration of roles per instance is done in the yml file as well, so a multiple instance deployment stack like Docker Swarm or Kubernetes is also possible.
 - Integration with Designate and Infoblox allow for DNS records to be created, deleted or modified as well.
@@ -39,6 +39,4 @@ Where does Altostraus Fit in My Automation?
 - The goal is not to displace these existing tools, but to make the ease of deploying cloud resources and application deployment easier.
 - You can run it from the command line using ansible-playbook or spawn it using any number of tools like Jenkins, Tower, Rundeck, etc...
 
-.. image:: _static/altostratus-diagram.JPG
-
-- 
+.. image:: ../_static/altostratus-diagram.JPG
