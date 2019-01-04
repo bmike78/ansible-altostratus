@@ -9,8 +9,8 @@ Application Roles
 --------------
 Application roles can either be custom apps or downloaded from Ansible Galaxy.
 
-Custom roles are stored in roles/apps/
-Ansible Galaxy roles are stored in roles/galaxy/.  This location is defined in ansible.cfg::
+- Custom roles are stored in roles/apps/
+- Ansible Galaxy roles are stored in roles/galaxy/.  This location is defined in ansible.cfg::
 
   server1:/etc/ansible/ansible-altostratus/roles/apps
   # ls

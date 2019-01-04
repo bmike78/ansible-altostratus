@@ -26,7 +26,7 @@ These are Openstack cloud variables.  These would be similar to what you would u
   cloud_username: <project_user>
   cloud_password: <project_password>
   cloud_domain: EXAMPLE
-  cloud_project: mike-project
+  cloud_project: example-project
 
 Designate
 ~~~~~~~~~
@@ -97,7 +97,7 @@ This is where security groups, security group rules, DNS (Designate, Infoblox, b
       ttl: 100
 
   instance_names:
-    - instance_name: mlab90app1
+    - instance_name: example-instance
       #instance_state: absent
       instance_state: present
       instance_key: openstack-admin
@@ -105,18 +105,17 @@ This is where security groups, security group rules, DNS (Designate, Infoblox, b
       instance_image_regex: centos-7-current
       instance_flavor: m1.large
       instance_boot_from_volume: false
-      instance_network: mike-project_private
-      #instance_network: lab-shared-783_network
+      instance_network: example-project_private
       instance_terminate_volume: true
       instance_auto_ip: true
       #instance_auto_ip: false
       instance_lock: true
       instance_volumes:
-      - name: mlab90app1-vol1
+      - name: example-instance1-vol1
         size: 10
         type: volumes_ceph
         device: /dev/vdb
-      - name: mlab90app1-vol2
+      - name: example-instance1-vol2
         size: 15
         type: volumes_ceph
         device: /dev/vdc
@@ -221,30 +220,30 @@ Playbook Files
 
 Example Playbook - Openstack instance creation and application installation:
 ----------------------------------------------------------------------------
-Create openstack instance mlab90app1 on openstack.example.com and install Apache and MySQL::
+Create openstack instance example-instance1 on openstack.example.com and install Apache and MySQL::
 
   (venv-ansible-altostratus)
   server1:/etc/ansible/ansible-altostratus
-  # ansible-playbook os_instance-mlab90app1.yml
+  # ansible-playbook os_instance-example.yml
   PLAY [configuration of altostratus Openstack instances]  *********************************************************************************************************************************************
 
   TASK [openstack/instance : Upload keypair openstack-admin] ******************************************************************************************************************************************
   ok: [localhost]
 
-  TASK [openstack/instance : Create security groups for mike-project]   *********************************************************************************************************************************
+  TASK [openstack/instance : Create security groups for example-project]   *********************************************************************************************************************************
   ok: [localhost] => (item={u'state': u'present', u'name': u'ssh', u'description': u'SSH Rule'})
   ok: [localhost] => (item={u'state': u'present', u'name': u'ping', u'description': u'Ping Rule'})
 
-  TASK [openstack/instance : Create TCP/UDP security groups rules for mike-project] *******************************************************************************************************************
+  TASK [openstack/instance : Create TCP/UDP security groups rules for example-project] *******************************************************************************************************************
   ok: [localhost] => (item={u'protocol': u'tcp', u'remote_ip_prefix': u'0.0.0.0/0', u'port_range_max': 22, u'state': u'present', u'port_range_min': 22, u'security_group': u'ssh'})
   skipping: [localhost] => (item={u'security_group': u'ping', u'remote_ip_prefix': u'0.0.0.0/0', u'state': u'present', u'protocol': u'icmp'})
 
-  TASK [openstack/instance : Create ICMP security groups rules for mike-project] **********************************************************************************************************************
+  TASK [openstack/instance : Create ICMP security groups rules for example-project] **********************************************************************************************************************
   skipping: [localhost] => (item={u'protocol': u'tcp', u'remote_ip_prefix': u'0.0.0.0/0', u'port_range_max': 22, u'state': u'present', u'port_range_min': 22, u'security_group': u'ssh'})
   ok: [localhost] => (item={u'security_group': u'ping', u'remote_ip_prefix': u'0.0.0.0/0', u'state': u'present', u'protocol': u'icmp'})
 
   TASK [openstack/instance : pass variables into include for instance deletion] ***********************************************************************************************************************
-  skipping: [localhost] => (item={u'instance_terminate_volume': True, u'app_install': True, u'instance_key': u'openstack-admin', u'instance_image_regex': u'centos-7-current', u'instance_boot_from_volume': False, u'instance_security_groups': u'ping,ssh', u'instance_name': u'mlab90app1', u'instance_state': u'present', u'instance_network': u'mike-project_private', u'instance_volumes': [{u'device': u'/dev/vdb', u'type': u'volumes_ceph', u'name': u'mlab90app1-vol1', u'size': 10}, {u'device': u'/dev/vdc', u'type': u'volumes_ceph', u'name': u'mlab90app1-vol2', u'size': 15}], u'instance_roles': [{u'role': u'apache'}, {u'role': u'mysql'}], u'instance_flavor': u'm1.large', u'instance_lock': True, u'instance_auto_ip': True})
+  skipping: [localhost] => (item={u'instance_terminate_volume': True, u'app_install': True, u'instance_key': u'openstack-admin', u'instance_image_regex': u'centos-7-current', u'instance_boot_from_volume': False, u'instance_security_groups': u'ping,ssh', u'instance_name': u'example-instance1', u'instance_state': u'present', u'instance_network': u'example-project_private', u'instance_volumes': [{u'device': u'/dev/vdb', u'type': u'volumes_ceph', u'name': u'example-instance1-vol1', u'size': 10}, {u'device': u'/dev/vdc', u'type': u'volumes_ceph', u'name': u'example-instance1-vol2', u'size': 15}], u'instance_roles': [{u'role': u'apache'}, {u'role': u'mysql'}], u'instance_flavor': u'm1.large', u'instance_lock': True, u'instance_auto_ip': True})
 
   TASK [openstack/instance : pass variables into include for instance creation] ***********************************************************************************************************************
   included: /etc/ansible//ansible-altostratus/roles/openstack/instance/tasks/create.yml for localhost
@@ -268,22 +267,22 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
   TASK [openstack/instance : include] *****************************************************************************************************************************************************************
   included: /etc/ansible/ansible-altostratus/roles/openstack/instance/tasks/instance.yml for localhost
 
-  TASK [openstack/instance : Setting managed instance mlab90app1 to present with image centos-7-current-1538352316] ***********************************************************************************
+  TASK [openstack/instance : Setting managed instance example-instance1 to present with image centos-7-current-1538352316] ***********************************************************************************
   skipping: [localhost]
 
-  TASK [openstack/instance : Setting instance mlab90app1 to present with image centos-7-current-1538352316] *******************************************************************************************
+  TASK [openstack/instance : Setting instance example-instance1 to present with image centos-7-current-1538352316] *******************************************************************************************
   changed: [localhost]
 
   TASK [openstack/instance : include] *****************************************************************************************************************************************************************
   included: /etc/ansible/ansible-altostratus/roles/openstack/instance/tasks/volumes.yml for localhost
 
-  TASK [openstack/instance : Setting volumes for mlab90app1 to present] *******************************************************************************************************************************
-  changed: [localhost] => (item={u'device': u'/dev/vdb', u'type': u'volumes_ceph', u'name': u'mlab90app1-vol1', u'size': 10})
-  changed: [localhost] => (item={u'device': u'/dev/vdc', u'type': u'volumes_ceph', u'name': u'mlab90app1-vol2', u'size': 15})
+  TASK [openstack/instance : Setting volumes for example-instance1 to present] *******************************************************************************************************************************
+  changed: [localhost] => (item={u'device': u'/dev/vdb', u'type': u'volumes_ceph', u'name': u'example-instance1-vol1', u'size': 10})
+  changed: [localhost] => (item={u'device': u'/dev/vdc', u'type': u'volumes_ceph', u'name': u'example-instance1-vol2', u'size': 15})
 
-  TASK [openstack/instance : Attach volumes for mlab90app1] ******************************************************************************************************************************************* 
-  changed: [localhost] => (item={u'device': u'/dev/vdb', u'type': u'volumes_ceph', u'name': u'mlab90app1-vol1', u'size': 10})
-  changed: [localhost] => (item={u'device': u'/dev/vdc', u'type': u'volumes_ceph', u'name': u'mlab90app1-vol2', u'size': 15})
+  TASK [openstack/instance : Attach volumes for example-instance1] ******************************************************************************************************************************************* 
+  changed: [localhost] => (item={u'device': u'/dev/vdb', u'type': u'volumes_ceph', u'name': u'example-instance1-vol1', u'size': 10})
+  changed: [localhost] => (item={u'device': u'/dev/vdc', u'type': u'volumes_ceph', u'name': u'example-instance1-vol2', u'size': 15})
 
   TASK [openstack/instance : include] *****************************************************************************************************************************************************************
   included: /etc/ansible/ansible-altostratus/roles/openstack/instance/tasks/lock.yml for localhost
@@ -311,7 +310,7 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
             "accessIPv4": "192.168.84.52",
             "accessIPv6": "",
             "addresses": {
-                "mike-project_private": [
+                "example-project_private": [
                     {
                         "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:be:7d:ba",
                         "OS-EXT-IPS:type": "fixed",
@@ -358,7 +357,7 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
                 "zone": "nova"
             },
             "metadata": {},
-            "name": "mlab90app1",
+            "name": "example-instance1",
             "networks": {},
             "os-extended-volumes:volumes_attached": [
                 {
@@ -428,13 +427,13 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
   TASK [openstack/instance : include] *****************************************************************************************************************************************************************
   included: /etc/ansible/ansible-altostratus/roles/openstack/instance/tasks/designate.yml for localhost
 
-  TASK [openstack/instance : Create or Delete Designate DNS entry for mlab90app1.mike-project.cloud.example.com using 192.168.84.52] ********************************************************************
-  changed: [localhost] => (item={u'name': u'mlab90app1', u'recordset_type': u'A', u'description': u'Record for mlab90app1', u'zone': u'mike-project.cloud.example.com.', u'ttl': 100})
+  TASK [openstack/instance : Create or Delete Designate DNS entry for example-instance.example-project.cloud.example.com using 192.168.84.52] ********************************************************************
+  changed: [localhost] => (item={u'name': u'example-instance1', u'recordset_type': u'A', u'description': u'Record for example-instance1', u'zone': u'example-project.cloud.example.com.', u'ttl': 100})
 
   TASK [openstack/instance : include] *****************************************************************************************************************************************************************
   included: /etc/ansible/ansible-altostratus/roles/openstack/instance/tasks/infoblox.yml for localhost
 
-  TASK [openstack/instance : Create or Delete Infoblox DNS entry for mlab90app1.infoblox.example.com using 192.168.84.52] *************************************************************************************
+  TASK [openstack/instance : Create or Delete Infoblox DNS entry for example-instance1.infoblox.example.com using 192.168.84.52] *************************************************************************************
   changed: [localhost]
 
   TASK [openstack/instance : include] *****************************************************************************************************************************************************************
@@ -470,7 +469,7 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
             "accessIPv4": "192.168.84.52",
             "accessIPv6": "",
             "addresses": {
-                "mike-project_private": [
+                "example-project_private": [
                     {
                         "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:be:7d:ba",
                         "OS-EXT-IPS:type": "fixed",
@@ -517,7 +516,7 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
                 "zone": "nova"
             },
             "metadata": {},
-            "name": "mlab90app1",
+            "name": "example-instance1",
             "networks": {},
             "os-extended-volumes:volumes_attached": [
                 {
@@ -604,51 +603,51 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
   PLAY [configuration of altostratus apps - geerlingguy.apache] ***************************************************************************************************************************************
 
   TASK [Gathering Facts] ******************************************************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : Include OS-specific variables.] ***********************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : Include variables for Amazon Linux.] ******************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : Define apache_packages.] ******************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : include_tasks] ****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.apache/tasks/setup-RedHat.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.apache/tasks/setup-RedHat.yml for example-instance1
 
   TASK [galaxy/geerlingguy.apache : Ensure Apache is installed on RHEL.] ******************************************************************************************************************************
-  changed: [mlab90app1] => (item=[u'httpd', u'httpd-devel', u'mod_ssl', u'openssh'])
+  changed: [example-instance1] => (item=[u'httpd', u'httpd-devel', u'mod_ssl', u'openssh'])
 
   TASK [galaxy/geerlingguy.apache : Get installed version of Apache.] *********************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : Create apache_version variable.] **********************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : include_vars] *****************************************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : include_vars] *****************************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : include_tasks] ****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.apache/tasks/configure-RedHat.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.apache/tasks/configure-RedHat.yml for example-instance1
 
   TASK [galaxy/geerlingguy.apache : Configure Apache.] ************************************************************************************************************************************************
-  ok: [mlab90app1] => (item={u'regexp': u'^Listen ', u'line': u'Listen 80'})
+  ok: [example-instance1] => (item={u'regexp': u'^Listen ', u'line': u'Listen 80'})
 
   TASK [galaxy/geerlingguy.apache : Check whether certificates defined in vhosts exist.] **************************************************************************************************************
 
   TASK [galaxy/geerlingguy.apache : Add apache vhosts configuration.] *********************************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
 
   TASK [galaxy/geerlingguy.apache : Ensure Apache has selected state and enabled on boot.] ************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
 
   RUNNING HANDLER [galaxy/geerlingguy.apache : restart apache] ****************************************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
  [WARNING]: Could not match supplied host pattern, ignoring: elasticsearch
 
 
@@ -658,169 +657,169 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
   PLAY [configuration of altostratus apps - geerlingguy.mysql] ****************************************************************************************************************************************
 
   TASK [Gathering Facts] ******************************************************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/variables.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/variables.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Include OS-specific variables.] ************************************************************************************************************************************
 
   TASK [galaxy/geerlingguy.mysql : Include OS-specific variables (RedHat).] ***************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_packages.] ********************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_daemon.] **********************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_slow_query_log_file.] *********************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_log_error.] *******************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_syslog_tag.] ******************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_pid_file.] ********************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_config_file.] *****************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_config_include_dir.] **********************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_socket.] **********************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Define mysql_supports_innodb_large_prefix.] ************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/setup-RedHat.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/setup-RedHat.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Ensure MySQL packages are installed.] ******************************************************************************************************************************
-  changed: [mlab90app1] => (item=[u'mariadb', u'mariadb-server', u'mariadb-libs', u'MySQL-python', u'perl-DBD-MySQL'])
+  changed: [example-instance1] => (item=[u'mariadb', u'mariadb-server', u'mariadb-libs', u'MySQL-python', u'perl-DBD-MySQL'])
 
   TASK [galaxy/geerlingguy.mysql : Ensure MySQL Python libraries are installed.] **********************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Check if MySQL packages were installed.] ***************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/configure.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/configure.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Get MySQL version.] ************************************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Copy my.cnf global MySQL configuration.] ***************************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Verify mysql include directory exists.] ****************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Copy my.cnf override files into include directory.] ****************************************************************************************************************
 
   TASK [galaxy/geerlingguy.mysql : Create slow query log file (if configured).] ***********************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Create datadir if it does not exist] *******************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Set ownership on slow query log file (if configured).] *************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Create error log file (if configured).] ****************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Set ownership on error log file (if configured).] ******************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Ensure MySQL is started and enabled on boot.] **********************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/secure-installation.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/secure-installation.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Ensure default user is present.] ***********************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Copy user-my.cnf file with password credentials.] ******************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Disallow root login remotely] **************************************************************************************************************************************
-  ok: [mlab90app1] => (item=DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'))
+  ok: [example-instance1] => (item=DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'))
 
   TASK [galaxy/geerlingguy.mysql : Get list of hosts for the root user.] ******************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Update MySQL root password for localhost root account (5.7.x).] ****************************************************************************************************
-  skipping: [mlab90app1] => (item=127.0.0.1)
-  skipping: [mlab90app1] => (item=::1)
-  skipping: [mlab90app1] => (item=localhost)
+  skipping: [example-instance1] => (item=127.0.0.1)
+  skipping: [example-instance1] => (item=::1)
+  skipping: [example-instance1] => (item=localhost)
 
   TASK [galaxy/geerlingguy.mysql : Update MySQL root password for localhost root account (< 5.7.x).] **************************************************************************************************
-  changed: [mlab90app1] => (item=127.0.0.1)
-  changed: [mlab90app1] => (item=::1)
-  changed: [mlab90app1] => (item=localhost)
+  changed: [example-instance1] => (item=127.0.0.1)
+  changed: [example-instance1] => (item=::1)
+  changed: [example-instance1] => (item=localhost)
 
   TASK [galaxy/geerlingguy.mysql : Copy .my.cnf file with root password credentials.] *****************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Get list of hosts for the anonymous user.] *************************************************************************************************************************
-  ok: [mlab90app1]
+  ok: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Remove anonymous MySQL users.] *************************************************************************************************************************************
-  changed: [mlab90app1] => (item=localhost)
-  changed: [mlab90app1] => (item=mlab90app1.openstacklocal)
+  changed: [example-instance1] => (item=localhost)
+  changed: [example-instance1] => (item=example-instance1.openstacklocal)
 
   TASK [galaxy/geerlingguy.mysql : Remove MySQL test database.] ***************************************************************************************************************************************
-  changed: [mlab90app1]
+  changed: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/databases.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/databases.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Ensure MySQL databases are present.] *******************************************************************************************************************************
-  changed: [mlab90app1] => (item={u'collation': u'latin1_general_ci', u'name': u'example_db', u'encoding': u'latin1'})
+  changed: [example-instance1] => (item={u'collation': u'latin1_general_ci', u'name': u'example_db', u'encoding': u'latin1'})
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/users.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/users.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Ensure MySQL users are present.] ***********************************************************************************************************************************
-  changed: [mlab90app1] => (item=None)
-  changed: [mlab90app1]
+  changed: [example-instance1] => (item=None)
+  changed: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : include_tasks] *****************************************************************************************************************************************************
-  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/replication.yml for mlab90app1
+  included: /etc/ansible/ansible-altostratus/roles/galaxy/geerlingguy.mysql/tasks/replication.yml for example-instance1
 
   TASK [galaxy/geerlingguy.mysql : Ensure replication user exists on master.] *************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Check slave replication status.] ***********************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Check master replication status.] **********************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Configure replication on the slave.] *******************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   TASK [galaxy/geerlingguy.mysql : Start replication.] ************************************************************************************************************************************************
-  skipping: [mlab90app1]
+  skipping: [example-instance1]
 
   RUNNING HANDLER [galaxy/geerlingguy.mysql : restart mysql] ******************************************************************************************************************************************
  [WARNING]: Ignoring "sleep" as it is not used in "systemd"
 
-  changed: [mlab90app1]
+  changed: [example-instance1]
  [WARNING]: Could not match supplied host pattern, ignoring: postgresql
 
 
@@ -889,4 +888,4 @@ Create openstack instance mlab90app1 on openstack.example.com and install Apache
 
   PLAY RECAP ******************************************************************************************************************************************************************************************
   localhost                  : ok=35   changed=11   unreachable=0    failed=0
-  mlab90app1                 : ok=51   changed=14   unreachable=0    failed=0
+  example-instance1                 : ok=51   changed=14   unreachable=0    failed=0

@@ -13,6 +13,10 @@ Altostratus_ combines Ansible_ playbook roles with cloud resources, such as Open
 - It allows for mixing of roles to deploy resources and applications to multiple clouds or instances.
 - It allows for reconfiguration of existing resources using Ansible's built in idempotence capabilities for Ansible modules.
 
+.. _Altostratus: https://github.com/bmike78/ansible-altostratus
+.. _Ansible: https://www.ansible.com/
+
+
 Why is it called Altostratus ?
 ------------------------------
 Altostratus - a layer cloud at an intermediate height of about 2400 to 6000 metres (8000 to 20 000 feet).  The playbook sits above all your clouds, but can be used by interfaces above it, like ansible-playbook, API, Jenkins, Rundeck, Ansible Tower, AWX or Vespene.
